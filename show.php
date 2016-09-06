@@ -1,3 +1,32 @@
+<?php
+    // ①DBへ接続
+  $dsn = 'mysql:dbname=myfriends;host=localhost';
+  $user = 'root';
+  $password = '';
+  $dbh = new PDO($dsn, $user, $password);
+  $dbh->query('SET NAMES utf8');
+
+  // ②GETパラメータを取得
+  $area_id = $_GET['area_id'];
+
+  // ③SQLを作成
+  $sql = 'SELECT `area_name` FROM `areas` WHERE `area_id` = ?';
+  $data[] = $area_id;
+
+  // ④SQLを実行
+  $stmt = $dbh->prepare($sql);
+  $stmt -> execute($data);
+
+  // ⑤都道府県名取得
+  $area = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+  // DB切断
+  $dbh = null;
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -33,7 +62,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="index.html"><span class="strong-title"><i class="fa fa-facebook-square"></i> My friends</span></a>
+              <a class="navbar-brand" href="index.php"><span class="strong-title"><i class="fa fa-facebook-square"></i> My friends</span></a>
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -48,7 +77,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 content-margin-top">
-      <legend>北海道の友達</legend>
+      <legend><?php echo $area['area_name']; ?>の友達</legend>
       <div class="well">男性：2名　女性：1名</div>
         <table class="table table-striped table-hover table-condensed">
           <thead>
