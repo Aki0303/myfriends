@@ -26,6 +26,26 @@
     $areas[] = $rec;
   }
 
+  // DBに登録する処理
+  if (!empty($_POST)) {
+    // SQLを作成
+    $sql = 'INSERT INTO `friends`(`friend_name`, `area_id`, `gender`, `age`, `created`) VALUES ( ?, ?, ?, ?,now())';
+    // input typeのnameから持ってくる↓
+    $data[] = $_POST['name'];
+    $data[] = $_POST['area_id'];
+    $data[] = $_POST['gender'];
+    $data[] = $_POST['age'];
+
+  // SQL実行
+    $stmt = $dbh->prepare($sql);
+    $stmt -> execute($data);
+
+  // index.phpへ遷移する
+    header('Location: index.php');
+    exit();
+
+  }
+
   // DBの切断
   $dbh = null;
 ?>
