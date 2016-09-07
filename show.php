@@ -20,6 +20,26 @@
   // ⑤都道府県名取得
   $area = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// --------------------------------------------------------------------------------
+  // ⑥友達一覧を取得するSQL文を作成
+  $sql = 'SELECT * FROM `friends` WHERE `area_id` = ?';
+
+  // $data[] = $area_id;はすでにあるのでそれを使い回す
+
+  $stmt = $dbh->prepare($sql);
+  $stmt -> execute($data);
+
+  // 友だちデータ格納用変数
+  $friends = array();
+
+  // ⑦友達データを取得
+  while (1) {
+      $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+      if ($rec == false) {
+      break ;
+    }
+    $friends[] = $rec;
+  }
 
   // DB切断
   $dbh = null;
@@ -88,33 +108,17 @@
           </thead>
           <tbody>
             <!-- 友達の名前を表示 -->
-            <tr>
-              <td><div class="text-center">山田　太郎</div></td>
-              <td>
-                <div class="text-center">
-                  <a href="edit.html"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a href="javascript:void(0);" onclick="destroy();"><i class="fa fa-trash"></i></a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="text-center">小林　花子</div></td>
-              <td>
-                <div class="text-center">
-                  <a href="edit.html"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a href="javascript:void(0);" onclick="destroy();"><i class="fa fa-trash"></i></a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="text-center">佐藤　健</div></td>
-              <td>
-                <div class="text-center">
-                  <a href="edit.html"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a href="javascript:void(0);" onclick="destroy();"><i class="fa fa-trash"></i></a>
-                </div>
-              </td>
-            </tr>
+            <?php foreach($friends as $friend) : ?>
+              <tr>
+                <td><div class="text-center"><?php echo $friend['friend_name']; ?></div></td>
+                <td>
+                  <div class="text-center">
+                    <a href="edit.html"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="javascript:void(0);" onclick="destroy();"><i class="fa fa-trash"></i></a>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
           </tbody>
         </table>
 
