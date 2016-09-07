@@ -1,16 +1,16 @@
 <?php
     // ①DBへ接続
-  $dsn = 'mysql:dbname=myfriends;host=localhost';
-  $user = 'root';
+  $dsn      = 'mysql:dbname=myfriends;host=localhost';
+  $user     = 'root';
   $password = '';
-  $dbh = new PDO($dsn, $user, $password);
+  $dbh      = new PDO($dsn, $user, $password);
   $dbh->query('SET NAMES utf8');
 
   // ②GETパラメータを取得
   $area_id = $_GET['area_id'];
 
   // ③SQLを作成
-  $sql = 'SELECT `area_name` FROM `areas` WHERE `area_id` = ?';
+  $sql    = 'SELECT `area_name` FROM `areas` WHERE `area_id` = ?';
   $data[] = $area_id;
 
   // ④SQLを実行
@@ -32,6 +32,10 @@
   // 友だちデータ格納用変数
   $friends = array();
 
+  // 男女カウント用変数
+  $male  = 0;
+  $female = 0;
+
   // ⑦友達データを取得
   while (1) {
       $rec = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,6 +43,15 @@
       break ;
     }
     $friends[] = $rec;
+
+    // 男女のカウント
+    if ($rec['gender'] == 1) {
+      // 男性の数
+      $male++;
+    } elseif ($rec['gender'] == 2) {
+      // 女性の数
+      $female++;
+    } 
   }
 
   // DB切断
@@ -98,7 +111,7 @@
     <div class="row">
       <div class="col-md-4 content-margin-top">
       <legend><?php echo $area['area_name']; ?>の友達</legend>
-      <div class="well">男性：2名　女性：1名</div>
+      <div class="well">男性：<?php echo $male; ?>名　女性：<?php echo $female; ?>名</div>
         <table class="table table-striped table-hover table-condensed">
           <thead>
             <tr>
