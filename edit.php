@@ -54,7 +54,7 @@
     $stmt = $dbh->prepare($sql);
     $stmt ->execute($edit_data);
 
-    // 処理完了後、index.phpに遷移する  
+    // 更新処理完了後、index.phpに遷移する  
     header('Location: index.php');
     exit();
   }
