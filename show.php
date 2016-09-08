@@ -33,7 +33,7 @@
   $friends = array();
 
   // 男女カウント用変数
-  $male  = 0;
+  $male   = 0;
   $female = 0;
 
   // ⑦友達データを取得
@@ -126,7 +126,7 @@
                 <td><div class="text-center"><?php echo $friend['friend_name']; ?></div></td>
                 <td>
                   <div class="text-center">
-                    <a href="edit.php"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="edit.php?friend_id=<?php echo $friend['friend_id'];?>"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="javascript:void(0);" onclick="destroy();"><i class="fa fa-trash"></i></a>
                   </div>
                 </td>
